@@ -4,7 +4,7 @@ import { FirmBranding, Language } from '../types';
 import { 
   ShieldCheck, Zap, Scale, Cpu, BrainCircuit, Users, Heart, Bot, Search, 
   ExternalLink, Phone, Sparkles, Gavel, BarChart3, X, CheckCircle2, 
-  Database, Fingerprint, Lock, ShieldAlert
+  Database, Fingerprint, Lock, ShieldAlert, Target, TrendingUp, Landmark, FileSearch, HeartPulse, ShieldX, ArrowRight
 } from 'lucide-react';
 
 interface AboutViewsProps {
@@ -12,251 +12,187 @@ interface AboutViewsProps {
   language: Language;
 }
 
-type ModalType = 'ai_synthesis' | 'attorney_oversight' | null;
-
 const AboutViews: React.FC<AboutViewsProps> = ({ firm, language }) => {
-  const [activeModal, setActiveModal] = useState<ModalType>(null);
+  const brandName = language === 'en' ? 'injury.bot' : 'lesion.bot';
 
   const t = {
-    title: language === 'en' ? "The Injury.bot Difference" : "La Diferencia de Injury.bot",
-    subtitle: language === 'en' ? "Data-Driven Strategy for Modern Injury Law" : "Estrategia de Datos para el Derecho de Lesiones Moderno",
+    title: language === 'en' ? "The Policy Limits Protocol" : "El Protocolo de Límites de Póliza",
+    subtitle: language === 'en' ? "35 Years of Trial Experience + AI Infrastructure" : "35 Años de Experiencia en Juicios + Infraestructura de IA",
     p1: language === 'en' 
-      ? `At ${firm.firmName}, we treat technology as a strategic leverage point for our clients.`
-      : `En ${firm.firmName}, tratamos la tecnología como un punto de apalancamiento estratégico para nuestros clientes.`,
-    p2: language === 'en'
-      ? "Insurance companies are currently utilizing sophisticated AI tools to evaluate your claim and predict jury behavior. They use this data to set artificial settlement floors and minimize their payouts. We believe you deserve access to that same level of intelligence to protect your future."
-      : "Las compañías de seguros utilizan sofisticadas herramientas de IA para evaluar su reclamo. Utilizan estos datos para establecer límites de liquidación artificiales. Creemos que usted merece acceso a ese mismo nivel de inteligencia.",
-    p3: language === 'en'
-      ? `${firm.attorney} has built a reputation for relentless advocacy in the courtroom. By integrating high-level AI protocols into our practice, we provide our clients an absolute advantage. We don't just react to insurance company tactics; we anticipate them.`
-      : `${firm.attorney} ha construido una reputación de defensa implacable. Al integrar protocolos de IA de alto nivel, brindamos a nuestros clientes una ventaja absoluta.`,
-    h3: language === 'en' ? "Strategic Intelligence" : "Inteligencia Estratégica",
-    p4: language === 'en' 
-      ? "When we combine cutting-edge data synthesis with seasoned attorney oversight, you receive a significant advantage. This approach levels the playing field against billion-dollar corporations by using their own technological standards to prove the true value of your case."
-      : "Cuando combinamos la síntesis de datos de vanguardia con la supervisión de abogados experimentados, usted recibe una ventaja significativa. Este enfoque nivela el campo de juego contra corporaciones multimillonarias.",
-    legacy_h: language === 'en' ? "Courtroom Command" : "Mando en la Sala",
-    legacy_p: language === 'en' ? `Decades of trial experience ensure that every data point we identify is backed by the threat of a jury verdict.` : `Décadas de experiencia en juicios aseguran que cada dato que identificamos esté respaldado por la amenaza de un veredicto.`,
-    advantage_h: language === 'en' ? "Information Parity" : "Paridad de Información",
-    advantage_p: language === 'en' ? "We use proprietary protocols to analyze liability and damages with the same clinical accuracy as the adjusters." : "Utilizamos protocolos patentados para analizar la responsabilidad y los daños con precisión clínica.",
-    cta_h: language === 'en' ? "Need Extraordinary Counsel?" : "¿Necesita Asesoría Extraordinaria?",
-    cta_sub: language === 'en' ? "Our resourceful team is ready to stand with you. Contact us today for a free evaluation." : "Nuestro equipo creativo está listo para apoyarlo. Contáctenos hoy para una evaluación gratuita.",
-    cta_btn: language === 'en' ? `CALL ${firm.phone}` : `LLAMAR ${firm.phone}`,
-    resource_h: language === 'en' ? "Explore our full resources" : "Explore nuestros recursos",
-    resource_p: language === 'en' ? "Deep-dive profiles and successful case archives." : "Perfiles detallados y archivos de casos exitosos.",
+      ? `Traditional injury firms are built on manual labor and slow timelines. Our AI-powered infrastructure is designed for one purpose: demanding the policy limits.`
+      : `Las firmas tradicionales se basan en el trabajo manual y plazos lentos. Nuestra infraestructura impulsada por IA diseñada para un solo propósito: exigir los límites de la póliza.`,
+    history_h: language === 'en' ? "The Duty to Settle" : "El Deber de Liquidar",
+    history_p: language === 'en'
+      ? "In the 1920s, Texas courts established the 'Stowers Doctrine,' forcing insurance companies to act in good faith. Today, obtaining a policy limits offer requires more than just a serious injury—it requires a demand so well-organized and legally defensible that the insurer fears a multi-million dollar 'excess' verdict if they refuse to pay."
+      : "En la década de 1920, los tribunales de Texas establecieron la 'Doctrina Stowers', obligando a las aseguradoras a actuar de buena fe. Hoy, obtener una oferta de límites requiere una demanda tan bien organizada que la aseguradora tema un veredicto 'excesivo' si se niegan a pagar.",
+    ai_benefit_h: language === 'en' ? "The 20% Net Advantage" : "La Ventaja del 20% Neto",
+    ai_benefit_p: language === 'en'
+      ? "By using AI Agents to triage evidence, itemize medical bills, and perform legal research in seconds, we have eliminated the administrative bloat of traditional firms. This efficiency allows our clients to receive more than 20% more of their final settlement compared to standard industry models."
+      : "Al usar Agentes de IA para clasificar evidencia y detallar facturas médicas en segundos, hemos eliminado la carga administrativa. Esta eficiencia permite que nuestros clientes reciban más del 20% adicional de su liquidación final en comparación con los modelos estándar.",
+    cta_btn: language === 'en' ? `DEPLOY THE PROTOCOL` : `DESPLEGAR EL PROTOCOLO`,
   };
 
-  const modalContent = {
-    ai_synthesis: {
-      title: language === 'en' ? "AI Data Synthesis Protocol" : "Protocolo de Síntesis de Datos de IA",
-      icon: <BrainCircuit size={32} className="text-blue-500" />,
-      tagline: language === 'en' ? "Fighting Algorithms with Intelligence" : "Combatiendo Algoritmos con Inteligencia",
-      description: language === 'en' 
-        ? "InjuryBot doesn't just read documents; it synthesizes thousands of data points from medical records, police reports, and actuarial tables to find the hidden value insurance companies try to ignore." 
-        : "InjuryBot no solo lee documentos; sintetiza miles de puntos de datos de registros médicos, informes policiales y tablas actuariales para encontrar el valor oculto que las compañías de seguros intentan ignorar.",
-      features: [
-        { 
-          h: language === 'en' ? "Clinical Impact Mapping" : "Mapeo de Impacto Clínico", 
-          p: language === 'en' ? "Automatically cross-references your injuries with medical standards to predict long-term disability costs." : "Cruza automáticamente sus lesiones con estándares médicos para predecir costos de discapacidad a largo plazo." 
-        },
-        { 
-          h: language === 'en' ? "Liability Reconstruction" : "Reconstrucción de Responsabilidad", 
-          p: language === 'en' ? "AI-driven analysis of crash dynamics and witness testimony to establish definitive fault patterns." : "Análisis impulsado por IA de la dinámica de choques y testimonios para establecer patrones de culpa definitivos." 
-        },
-        { 
-          h: language === 'en' ? "Settlement Parity" : "Paridad de Liquidación", 
-          p: language === 'en' ? "We use the same data modeling insurance adjusters use, ensuring we negotiate from a position of absolute information parity." : "Usamos el mismo modelado de datos que los ajustadores, asegurando que negociamos desde una posición de paridad informativa absoluta." 
-        }
-      ]
+  const protocols = [
+    {
+      id: 'triage',
+      icon: <BrainCircuit className="text-blue-400" size={24} />,
+      title: language === 'en' ? "Autonomous Triage" : "Triaje Autónomo",
+      desc: language === 'en' ? "Our agents scan records to identify 'Anchor Injuries' that exceed insurance limits within hours of your onboarding." : "Nuestros agentes escanean registros para identificar 'Lesiones de Anclaje' que superan los límites en horas."
     },
-    attorney_oversight: {
-      title: language === 'en' ? "Elite Attorney Oversight" : "Supervisión de Abogados de Élite",
-      icon: <Users size={32} className="text-red-500" />,
-      tagline: language === 'en' ? "Data is the Weapon. Humans Win the War." : "Los Datos son el Arma. Los Humanos Ganan la Guerra.",
-      description: language === 'en' 
-        ? `Technology provides the evidence, but ${firm.attorney} provides the strategy. Every AI synthesis is personally reviewed by our lead trial attorneys to ensure human empathy and courtroom grit.` 
-        : `La tecnología proporciona la evidencia, pero ${firm.attorney} proporciona la estrategia. Cada síntesis de IA es revisada personalmente por nuestros abogados de juicio.`,
-      features: [
-        { 
-          h: language === 'en' ? "Strategic Refinement" : "Refinamiento Estratégico", 
-          p: language === 'en' ? "Our attorneys take the AI-generated facts and turn them into a compelling narrative for a jury." : "Nuestros abogados toman los hechos generados por la IA y los convierten en una narrativa convincente para el jurado." 
-        },
-        { 
-          h: language === 'en' ? "Trial-Ready Validation" : "Validación para Juicio", 
-          p: language === 'en' ? "We ensure every data point is admissible in court and backed by decades of courtroom command." : "Nos aseguramos de que cada punto de datos sea admisible en los tribunales y esté respaldado por décadas de mando." 
-        },
-        { 
-          h: language === 'en' ? "The Human Element" : "El Elemento Humano", 
-          p: language === 'en' ? "AI cannot replace the emotional weight of your story. We bridge the gap between hard data and your lived experience." : "La IA no puede reemplazar el peso emocional de su historia. Unimos la brecha entre los datos y su experiencia." 
-        }
-      ]
+    {
+      id: 'defense',
+      icon: <Gavel className="text-red-400" size={24} />,
+      title: language === 'en' ? "Defensible Demands" : "Demandas Defendibles",
+      desc: language === 'en' ? "AI synthesizes 35 years of trial strategy to build demands that trigger the insurer's legal duty to settle." : "La IA sintetiza 35 años de estrategia de juicio para construir demandas que activan el deber legal de liquidar."
+    },
+    {
+      id: 'clinical',
+      icon: <HeartPulse className="text-emerald-400" size={24} />,
+      title: language === 'en' ? "Clinical Synthesis" : "Síntesis Clínica",
+      desc: language === 'en' ? "Every ER bill and MRI report is mapped by agents to ensure no medical value is left off the negotiation table." : "Cada factura de urgencias e informe de RMN es mapeado para asegurar que no se omita ningún valor médico."
     }
-  };
+  ];
 
-  const renderModal = () => {
-    if (!activeModal) return null;
-    const content = modalContent[activeModal];
-
-    return (
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-xl animate-in fade-in duration-300">
-        <div className="bg-white w-full max-w-2xl rounded-[2rem] overflow-hidden shadow-2xl relative animate-in zoom-in-95 duration-500 border border-slate-200">
-          <button 
-            onClick={() => setActiveModal(null)}
-            className="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-900 transition-colors z-20"
-          >
-            <X size={28} />
-          </button>
-
-          <div className="p-8 sm:p-12">
-            <div className="flex items-center gap-5 mb-8">
-              <div className="p-4 bg-slate-50 rounded-2xl shadow-sm border border-slate-100 shrink-0">
-                {content.icon}
-              </div>
-              <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600 mb-1">{content.tagline}</p>
-                <h3 className="text-3xl font-black text-slate-900 tracking-tighter leading-none">{content.title}</h3>
-              </div>
-            </div>
-
-            <p className="text-lg text-slate-600 font-medium leading-relaxed mb-10 text-balance">
-              {content.description}
-            </p>
-
-            <div className="space-y-6 mb-10">
-              {content.features.map((f, i) => (
-                <div key={i} className="flex gap-4 group">
-                  <div className="mt-1 shrink-0">
-                    <CheckCircle2 size={20} className="text-emerald-500" />
-                  </div>
-                  <div>
-                    <h4 className="font-black text-slate-900 uppercase text-[11px] tracking-widest mb-1 group-hover:text-blue-600 transition-colors">{f.h}</h4>
-                    <p className="text-sm text-slate-500 font-medium leading-relaxed">{f.p}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <button 
-              onClick={() => setActiveModal(null)}
-              className="w-full py-5 bg-slate-900 text-white rounded-2xl font-black text-lg shadow-xl hover:bg-slate-800 transition-all active:scale-[0.98] uppercase tracking-widest"
-            >
-              Close Intelligence Briefing
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  };
+  const eligibility = [
+    { label: "Verified Coverage", icon: <ShieldCheck size={16} className="text-emerald-400" /> },
+    { label: "Clear Liability Indicators", icon: <CheckCircle2 size={16} className="text-emerald-400" /> },
+    { label: "No Subrogation Liens", icon: <ShieldX size={16} className="text-red-400" /> },
+    { label: "Electronic Record Access", icon: <Database size={16} className="text-blue-400" /> },
+  ];
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 max-w-5xl mx-auto px-4 sm:px-0 pb-20 no-scrollbar overflow-x-hidden">
-      {renderModal()}
+    <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 max-w-6xl mx-auto px-4 sm:px-0 pb-24 no-scrollbar overflow-x-hidden text-left">
       
-      <div className="text-center mb-16 pt-8">
-        <div className={`inline-flex p-4 rounded-2xl ${firm.primaryColor} text-white mb-6 shadow-xl relative min-w-[80px] min-h-[80px] items-center justify-center`}>
-          {firm.logoData ? (
-            <img src={firm.logoData} alt={firm.firmName} className="h-12 w-auto object-contain" />
-          ) : (
-            <Bot size={48} />
-          )}
-          <div className="absolute -top-3 -right-3 bg-yellow-400 p-2 rounded-xl text-slate-900 shadow-lg border-2 border-white animate-in zoom-in-50 duration-500 delay-300">
-            <Sparkles size={18} fill="currentColor" />
-          </div>
+      {/* Hero Branding */}
+      <div className="text-center mb-20 pt-8">
+        <div className="inline-flex items-center gap-2 bg-slate-900 border border-white/10 px-4 py-2 rounded-full mb-8 shadow-2xl">
+          <Zap size={14} className="text-amber-500 fill-amber-500" />
+          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400">Policy Limits Express Protocol</span>
         </div>
-        <h2 className="text-4xl sm:text-6xl font-black tracking-tighter mb-4">{t.title}</h2>
-        <p className="text-slate-500 font-bold uppercase tracking-[0.2em] text-[10px] sm:text-sm">{t.subtitle}</p>
+        <h2 className="text-5xl sm:text-7xl font-black tracking-tighter mb-6 text-slate-900 leading-[0.9]">
+          AI-Powered.<br/><span className="text-slate-400">Attorney-Built.</span>
+        </h2>
+        <p className="text-slate-500 font-bold uppercase tracking-[0.2em] text-sm max-w-2xl mx-auto">{t.subtitle}</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <div className="lg:col-span-7 space-y-10">
-          <p className="text-2xl sm:text-3xl font-black text-slate-900 leading-[1.1] tracking-tight">
-            {t.p1}
-          </p>
-          <p className="text-lg text-slate-500 leading-relaxed font-medium">
-            {t.p2}
-          </p>
-          <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 relative group">
-            <div className="absolute top-4 right-4 text-slate-200 group-hover:text-blue-200 transition-colors">
-              <Gavel size={48} />
-            </div>
-            <p className="text-lg text-slate-700 font-medium italic relative z-10 leading-relaxed">
-              {t.p3}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+        <div className="lg:col-span-7 space-y-12">
+          {/* Main Narrative */}
+          <section className="space-y-6">
+            <p className="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">
+              {t.p1}
             </p>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-              <div className="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center mb-4">
-                <Scale size={20} />
-              </div>
-              <h4 className="font-black text-slate-900 mb-2">{t.legacy_h}</h4>
-              <p className="text-xs text-slate-500 leading-relaxed font-medium">{t.legacy_p}</p>
+            <div className="h-1 w-20 bg-blue-600 rounded-full" />
+          </section>
+
+          {/* Stowers Section */}
+          <section className="bg-white p-8 sm:p-10 rounded-[2.5rem] border border-slate-100 shadow-xl relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-10 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity">
+              <Landmark size={150} />
             </div>
-            <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-              <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-4">
-                <BarChart3 size={20} />
+            <div className="relative z-10 space-y-6">
+              <div className="flex items-center gap-3">
+                <Scale className="text-blue-600" size={24} />
+                <h3 className="text-xl font-black uppercase tracking-tight">{t.history_h}</h3>
               </div>
-              <h4 className="font-black text-slate-900 mb-2">{t.advantage_h}</h4>
-              <p className="text-xs text-slate-500 leading-relaxed font-medium">{t.advantage_p}</p>
+              <p className="text-lg text-slate-600 leading-relaxed font-medium">
+                {t.history_p}
+              </p>
+              <p className="text-sm text-slate-400 font-bold italic">
+                {language === 'en' 
+                  ? "*Insurers prioritize cases where the recovery package is organized for immediate trial review." 
+                  : "*Las aseguradoras priorizan los casos donde el paquete de recuperación está organizado para revisión de juicio inmediata."}
+              </p>
             </div>
-          </div>
+          </section>
+
+          {/* Catastrophic Context */}
+          <section className="space-y-6">
+            <div className="flex items-center gap-3">
+               <ShieldAlert className="text-red-600" size={24} />
+               <h3 className="text-xl font-black uppercase tracking-tight">{language === 'en' ? "Beyond Catastrophic" : "Más allá de lo Catastrófico"}</h3>
+            </div>
+            <p className="text-lg text-slate-500 leading-relaxed font-medium">
+              {language === 'en' 
+                ? "It is a harsh reality: most policy limit cases involve catastrophic, life-altering injuries. However, a severe injury does not guarantee a maximum payout. Insurance adjusters are trained to minimize 'General Damages' unless they are presented with a clinical, legally defensible map of the impairment."
+                : "Es una realidad dura: la mayoría de los casos de límites involucran lesiones catastróficas. Sin embargo, una lesión grave no garantiza un pago máximo. Los ajustadores están entrenados para minimizar los daños a menos que se les presente un mapa legal defendible del deterioro."}
+            </p>
+          </section>
         </div>
 
         <div className="lg:col-span-5 space-y-8">
-          <div className="bg-slate-900 text-white p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden flex flex-col justify-center min-h-[400px]">
-            <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
-              <Bot size={200} />
-            </div>
-            <h3 className="text-3xl font-black mb-6 relative z-10 tracking-tight leading-none">{t.h3}</h3>
-            <p className="text-lg opacity-80 leading-relaxed mb-10 relative z-10 font-medium">
-              {t.p4}
-            </p>
-            <div className="space-y-4 relative z-10">
-              <button 
-                onClick={() => setActiveModal('ai_synthesis')}
-                className="w-full flex items-center gap-4 bg-white/5 border border-white/10 p-4 rounded-2xl backdrop-blur-md hover:bg-white/10 hover:border-blue-500/50 transition-all text-left active:scale-[0.98] group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center group-hover:shadow-[0_0_15px_rgba(37,99,235,0.5)] transition-all shrink-0"><BrainCircuit size={20} /></div>
-                <div className="flex-1">
-                  <p className="text-[10px] font-black uppercase tracking-widest leading-none">AI Data Synthesis</p>
-                  <p className="text-[8px] font-bold text-slate-500 mt-1 uppercase tracking-wider">Expand Intel</p>
+          {/* AI Efficiency Card */}
+          <div className="bg-slate-900 text-white p-10 rounded-[3rem] shadow-2xl relative overflow-hidden">
+             <div className="absolute top-0 right-0 p-12 opacity-10">
+                <Target size={180} className="text-blue-500" />
+             </div>
+             <div className="relative z-10 space-y-8">
+                <div>
+                   <div className="inline-flex items-center gap-2 bg-blue-600/20 border border-blue-500/30 px-3 py-1.5 rounded-full mb-4">
+                      <TrendingUp size={12} className="text-blue-400" />
+                      <span className="text-[9px] font-black uppercase tracking-widest text-blue-400">Net Recovery Advantage</span>
+                   </div>
+                   <h3 className="text-3xl font-black tracking-tight leading-none mb-4">{t.ai_benefit_h}</h3>
+                   <p className="text-lg opacity-80 leading-relaxed font-medium">
+                      {t.ai_benefit_p}
+                   </p>
                 </div>
-              </button>
-              <button 
-                onClick={() => setActiveModal('attorney_oversight')}
-                className="w-full flex items-center gap-4 bg-white/5 border border-white/10 p-4 rounded-2xl backdrop-blur-md hover:bg-white/10 hover:border-red-500/50 transition-all text-left active:scale-[0.98] group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center group-hover:shadow-[0_0_15px_rgba(220,38,38,0.5)] transition-all shrink-0"><Users size={20} /></div>
-                <div className="flex-1">
-                  <p className="text-[10px] font-black uppercase tracking-widest leading-none">Attorney Oversight</p>
-                  <p className="text-[8px] font-bold text-slate-500 mt-1 uppercase tracking-wider">Expert Protocol</p>
+
+                <div className="space-y-4">
+                   {protocols.map((p) => (
+                     <div key={p.id} className="bg-white/5 border border-white/10 p-5 rounded-2xl flex gap-4 hover:bg-white/10 transition-all cursor-default">
+                        <div className="shrink-0 mt-1">{p.icon}</div>
+                        <div>
+                           <h4 className="text-[11px] font-black uppercase tracking-widest text-white mb-1">{p.title}</h4>
+                           <p className="text-xs text-slate-400 leading-relaxed font-medium">{p.desc}</p>
+                        </div>
+                     </div>
+                   ))}
                 </div>
-              </button>
-            </div>
+             </div>
           </div>
 
-          {/* Phone CTA Block */}
-          <div className={`${firm.primaryColor} p-10 rounded-3xl text-white text-center space-y-4 shadow-2xl animate-in zoom-in-95 delay-300`}>
-            <h4 className="text-3xl font-black leading-tight tracking-tight">{t.cta_h}</h4>
-            <p className="text-sm opacity-90 font-medium mb-4">{t.cta_sub}</p>
-            <a href={`tel:${firm.phone}`} className="w-full inline-flex items-center justify-center gap-3 bg-white text-slate-900 px-8 py-5 rounded-xl font-black text-xl hover:scale-[1.02] transition-transform shadow-xl active:scale-95">
-              <Phone size={24} fill="currentColor" /> {t.cta_btn}
-            </a>
-          </div>
-
-          {/* Website CTA Block (Restyled to match Phone CTA Block) */}
-          <div className="bg-slate-100 p-10 rounded-3xl text-slate-900 text-center space-y-6 shadow-xl border border-slate-200">
+          {/* PLE Eligibility Protocol - REPLACED Deploy the Protocol */}
+          <div className="bg-white border-2 border-slate-900 p-10 rounded-[3rem] text-slate-900 space-y-8 shadow-2xl group">
             <div className="space-y-2">
-              <h4 className="text-2xl font-black tracking-tight">{t.resource_h}</h4>
-              <p className="text-sm text-slate-500 font-medium">{t.resource_p}</p>
+               <div className="flex items-center gap-2">
+                  <ShieldCheck className="text-blue-600" size={24} />
+                  <h4 className="text-2xl font-black leading-none tracking-tight uppercase">{language === 'en' ? "Eligibility Protocol" : "Protocolo de Elegibilidad"}</h4>
+               </div>
+               <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">{language === 'en' ? "PLE Acceptance Criteria" : "Criterios de Aceptación PLE"}</p>
             </div>
             
-            <a 
-              href={firm.website} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="w-full inline-flex items-center justify-center gap-3 bg-slate-900 text-white px-8 py-5 rounded-xl font-black text-xl hover:scale-[1.02] transition-transform shadow-xl active:scale-95 uppercase tracking-tight"
+            <div className="space-y-3">
+               {eligibility.map((item, i) => (
+                 <div key={i} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
+                    {item.icon}
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-700">{item.label}</span>
+                 </div>
+               ))}
+            </div>
+
+            <button 
+              onClick={() => {
+                // This link should trigger the navigation to ple_terms in App.tsx
+                // Since this component is generic, we rely on the parent's route control if needed.
+                // For now, let's assume we want to direct them to the full criteria page.
+                const btn = document.querySelector('[data-nav="ple_terms"]') as HTMLElement;
+                if (btn) btn.click();
+                else window.scrollTo(0, 0);
+              }}
+              className="w-full inline-flex items-center justify-center gap-3 bg-slate-900 text-white px-8 py-5 rounded-2xl font-black text-sm hover:scale-[1.02] transition-transform shadow-xl active:scale-95 uppercase tracking-widest"
             >
-              {firm.websiteDisplay} <ExternalLink size={20} className="opacity-60" />
-            </a>
+              READ FULL ACCEPTANCE CRITERIA <ArrowRight size={18} />
+            </button>
+          </div>
+
+          {/* Final Disclosure */}
+          <div className="bg-slate-100 p-8 rounded-3xl border border-slate-200 text-center">
+             <p className="text-[10px] text-slate-500 font-bold uppercase leading-relaxed tracking-widest px-4">
+                {language === 'en' 
+                  ? "This system is a proprietary triage protocol. It does not replace the specialized judgment of lead counsel but augments it with high-velocity data synthesis."
+                  : "Este sistema es un protocolo de triaje patentado. No reemplaza el juicio del abogado principal, sino que lo aumenta con síntesis de datos de alta velocidad."}
+             </p>
           </div>
         </div>
       </div>
