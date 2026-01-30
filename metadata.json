@@ -1,0 +1,8 @@
+{
+  "name": "Gregg Injury Bot 2.4",
+  "description": "Premium AI legal intelligence platform for the Law Offices of Robert S. Gregg, featuring advanced case triage, serious injury estimation, and evidence synthesis.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
