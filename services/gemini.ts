@@ -9,7 +9,7 @@ export const streamExpertChat = async (
   lang: Language = 'en',
   history: { role: string; parts: { text: string }[] }[] = []
 ) => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   
   // Directly pull the prompt from database (with default fallbacks)
   let systemPrompt = MockDB.getPrompt('chatbot');
