@@ -50,7 +50,7 @@ export const analyzeCaseEvidence = async (
   attorneyName: string,
   lang: Language = 'en'
 ) => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   const model = 'gemini-3-flash-preview';
   
   let textPrompt = MockDB.getPrompt('analyzer');
